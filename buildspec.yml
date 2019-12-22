@@ -35,6 +35,7 @@ phases:
       - ls
 artifacts:
   files: build.json
+
 env:
   parameter-store:         
-    JWT_SECRET: 'abc123abc1234'
+    JWT_SECRET: JWT_SECRET
