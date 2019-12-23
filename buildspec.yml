@@ -23,9 +23,6 @@ phases:
   post_build:
     commands:
       - docker push $REPOSITORY_URI:$TAG
-      # - echo ${CREDENTIALS} => 
-      # - echo $EKS_KUBECTL_ROLE_ARN => arn:aws:iam::030883507400:role/UdacityFlaskDeployCBKubectlRole 
-      # - echo $EKS_CLUSTER_NAME => simple-jwt-api 
       - CREDENTIALS=$(aws sts assume-role --role-arn $EKS_KUBECTL_ROLE_ARN --role-session-name codebuild-kubectl --duration-seconds 900)
       - export AWS_ACCESS_KEY_ID="$(echo ${CREDENTIALS} | jq -r '.Credentials.AccessKeyId')"
       - export AWS_SECRET_ACCESS_KEY="$(echo ${CREDENTIALS} | jq -r '.Credentials.SecretAccessKey')"
@@ -36,7 +33,6 @@ phases:
       - echo $AWS_SESSION_TOKEN
       - echo $AWS_EXPIRATION
       - aws eks update-kubeconfig --name $EKS_CLUSTER_NAME
-      - aws --region eu-central-1 eks update-kubeconfig --name $EKS_CLUSTER_NAME --role-arn $EKS_KUBECTL_ROLE_ARN
       - kubectl apply -f simple_jwt_api.yml
       - printf '[{"name":"simple_jwt_api","imageUri":"%s"}]' $REPOSITORY_URI:$TAG > build.json
       - pwd

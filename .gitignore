@@ -16,7 +16,7 @@ _mailinglist
 .idea/
 docs/_build/
 __pycache__
-
+aws-auth-cm.yaml
 # Coverage reports
 htmlcov/
 .coverage
